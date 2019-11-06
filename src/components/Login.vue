@@ -1,7 +1,8 @@
 <template>
       <v-container
-        class="fill-height"
+        class="fill-height fix-margin"
         fluid
+
       >
         <v-row
           align="center"
@@ -68,3 +69,9 @@
         }
     }
 </script>
+
+<style scoped>
+  .fix-margin {
+    margin-top: 200px;
+  }
+</style>

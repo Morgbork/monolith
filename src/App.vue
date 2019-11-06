@@ -1,95 +1,41 @@
 <template>
   <div>
     <v-app>
-      <v-navigation-drawer app color="#424242">
-        <v-img max-width="250px" position="center" src="../assets/logo_final_tochno_final_228.png"></v-img>
-      </v-navigation-drawer>
-      <div class="mb-5">
-        <v-toolbar flat>
-          <v-toolbar-title>Title</v-toolbar-title>
-          <v-spacer></v-spacer>
-          <v-toolbar-items>
-          </v-toolbar-items>
-          <template v-if="$vuetify.breakpoint.smAndUp">
-            <v-btn icon>
-              <v-icon>mdi-export-variant</v-icon>
-            </v-btn>
-          </template>
-        </v-toolbar>
-      </div>
-      <v-content class="mx-12">
-        <v-carousel >
-          <v-carousel-item
-            v-for="(color, i) in colors"
-            :key="color"
-          >
-            <v-sheet
-              :color="color"
-              height="100%"
-              tile
-            >
-              <v-row
-                class="fill-height"
-                align="center"
-                justify="center"
-              >
-                <div class="display-3">Slide {{ i + 1 }}</div>
-              </v-row>
-            </v-sheet>
-          </v-carousel-item>
-        </v-carousel>
-        <v-container fluid>
-          <v-item-group>
-            <v-container>
-              <v-row>
-                <v-col
-                  v-for="n in goodsList"
-                  :key="n"
-                  cols="12"
-                  md="3"
-                >
-                  <v-item v-slot:default="{ active, toggle }">
-                    <v-card
-                      class="mx-auto"
-                      max-width="400"
-                    >
-                      <v-card-title>{{n.name}}</v-card-title>
-                      <v-img
-                        class="white--text align-end"
-                        height="200px"
-                        :src="n.image"
-                      >
-                      </v-img>
 
-                      <v-card-text class="text--primary body-1 font-weight-medium">
-                        <div>{{n.price}}$</div>
-                      </v-card-text>
+      <v-app-bar
+        color="#fafafa"
+        app
+        class="top-bar"
+        elevation="2"
+      >
+        <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+        <v-toolbar-title>
+          <img v-bind:class="{inactive: drawer}" class="nameplate" src="./assets/nameplate.png" >
+        </v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-btn icon>
+          <v-icon>mdi-magnify</v-icon>
+        </v-btn>
+      </v-app-bar>
 
-                      <v-card-actions>
-                        <v-btn
-                          color="orange"
-                          text
-                        >
-                          Favorite
-                        </v-btn>
-
-                        <v-btn
-                          color="orange"
-                          text
-                        >
-                          Buy
-                        </v-btn>
-                      </v-card-actions>
-                    </v-card>
-                  </v-item>
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-item-group>
+      <v-navigation-drawer  v-model="drawer" app height="100%" dark color="#424242" class="z-index-0">
+        <img class="logo" src="./assets/logo2.png">
+        <hr>
+        <v-container mt-10 class="catalog-title catalog-text-color">
+          <p>Catalog</p>
         </v-container>
-      </v-content>
+        <v-container ml-4 class="catalog-text-color">
+          <p v-for="n in categoriesList">{{n.category}}</p>
+        </v-container>
+      </v-navigation-drawer>
+
+      <v-container class="z-index-0">
+        <router-view></router-view>
+      </v-container>
+
       <v-footer app>
       </v-footer>
+
     </v-app>
   </div>
 </template>
@@ -97,21 +43,52 @@
 
 <script>
 export default {
-    name: 'app',  data() {
+    name: 'app',
+    data () {
         return {
-            image_src: require("../assets/logo_final_tochno_final_228.png"),
-            msg: "Welcome to Your Vue.js App"
-        };
-    },
-
+            drawer: !true
+        }
+   },
     mounted() {
             this.$store.dispatch('GET_GOODS');
+            this.$store.dispatch('GET_CATEGORIES');
     },
     computed: {
         goodsList() {
             return this.$store.getters.GOODS;
         },
+        categoriesList() {
+            return this.$store.getters.CATEGORIES;
+        },
     }
 }
 </script>
 
+<style scoped>
+  .catalog-title {
+    font-size: 30px;
+    font-weight: 100;
+    font-family: "Microsoft Sans Serif", sans-serif;
+  }
+  .catalog-text-color {
+    color: #FAFAFA;
+  }
+  .logo {
+    height:200px;
+    padding-left: 30px;
+  }
+
+   .nameplate {
+     width: 180px;
+     padding-top: 10px;
+   }
+
+  .top-bar {
+    position: fixed;
+  }
+
+  .inactive {
+    display: none;
+  }
+
+</style>

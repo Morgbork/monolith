@@ -14,7 +14,7 @@
                 align="center"
                 justify="center"
               >
-                <div class="display-3">Slide {{ i + 1 }}</div>
+                <div class="display-3">Slide</div>
               </v-row>
             </v-sheet>
           </v-carousel-item>
@@ -38,7 +38,6 @@
                   <v-img
                     class="white--text align-end"
                     height="160px"
-                    contain="True"
                     :src="n.image"
                   >
                   </v-img>

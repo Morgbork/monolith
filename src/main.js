@@ -5,7 +5,8 @@ import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import store from './store'
 
-const vuetifyOptions = { }
+
+const vuetifyOptions = { };
 Vue.use(Vuetify);
 
 Vue.config.productionTip = false;

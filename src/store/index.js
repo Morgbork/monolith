@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import router from '../router'
 
 Vue.use(Vuex);
 
@@ -12,15 +13,23 @@ const backend_url = axios.create({
 export default new Vuex.Store ({
   state: {
     goods: null,
+    categories: null,
+
   },
   getters: {
     GOODS: state => {
       return state.goods;
     },
+    CATEGORIES: state => {
+      return state.categories;
+    },
   },
   mutations:{
     SET_GOODS: (state, payload) => {
       state.goods = payload;
+    },
+    SET_CATEGORIES: (state, payload) => {
+      state.categories = payload;
     },
   },
   actions: {
@@ -30,5 +39,20 @@ export default new Vuex.Store ({
                                 context.commit('SET_GOODS', response.data);
                               });
     },
+    GET_CATEGORIES: async (context, payload) => {
+      await backend_url.get('/categories/')
+        .then((response) => {
+          context.commit('SET_CATEGORIES', response.data);
+        });
+    },
+    ADMIN_AUTH: async (context, payload) => {
+      await  backend_url.post('/rest-auth/login/', {username: payload.login, email: '', password: payload.password})
+        .then((response) => {
+            if (response.status===200)
+              {sessionStorage.adminToken = response.data.key; router.push("admin")}},
+          (reject) => {alert("Incorrect username or password")}
+
+        );
+    }
   },
 })

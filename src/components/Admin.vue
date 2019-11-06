@@ -11,7 +11,6 @@
               <v-container ma-n4>
                 <v-row align="center" justify="space-between" >
                   {{item.name}}
-                  <v-btn small outlined color="424242">Edit</v-btn>
                 </v-row>
               </v-container>
             </v-expansion-panel-header>
