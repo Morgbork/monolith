@@ -46,7 +46,7 @@ export default {
     name: 'app',
     data () {
         return {
-            drawer: !true
+            drawer: true
         }
    },
     mounted() {

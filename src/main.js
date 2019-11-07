@@ -4,10 +4,12 @@ import router from './router'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import store from './store'
+import Vuelidate from 'vuelidate'
 
 
-const vuetifyOptions = { };
+Vue.use(Vuelidate);
 Vue.use(Vuetify);
+const vuetifyOptions = { };
 
 Vue.config.productionTip = false;
 
