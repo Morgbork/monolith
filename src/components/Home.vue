@@ -23,7 +23,7 @@
 
       <v-item-group>
         <v-container>
-          <v-row justify="space-between" dense>
+          <v-row justify="left" dense>
             <v-col
               v-for="n in goodsList"
               :key="n.id"

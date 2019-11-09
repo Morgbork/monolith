@@ -11,59 +11,76 @@
       <v-row align="center" v-bind:class="{inactive: hiddenForm}">
         <v-col cols="12" sm="6">
           <v-text-field
+            v-model="newProduct.product_code"
             label="Product code"
-            outlined
+            filled
             color="#424242"
           ></v-text-field>
         </v-col>
         <v-col cols="12" sm="6">
           <v-text-field
+            v-model="newProduct.name"
             label="Product name"
-            outlined
+            filled
             color="#424242"
           ></v-text-field>
         </v-col>
-        <v-col cols="12" sm="6">
-          <v-text-field
+        <v-col cols="12" sm="6" >
+          <v-combobox
+            v-model="newProduct.category"
+            item-text="category"
+            :items="categoriesList"
             label="Category"
-            outlined
+            filled
             color="#424242"
-          ></v-text-field>
+          ></v-combobox>
         </v-col>
         <v-col cols="12" sm="6">
           <v-text-field
+            v-model="newProduct.price"
             label="Price"
-            outlined
+            filled
             suffix="$"
             color="#424242"
           ></v-text-field>
         </v-col>
-        <v-col cols="12">
-          <v-textarea
-            label="Description"
-            outlined
+        <v-col cols="12" sm="6">
+          <v-text-field
+            v-model="newProduct.manufacturer"
+            label="Manufacturer"
+            filled
             color="#424242"
-          ></v-textarea>
+          ></v-text-field>
         </v-col>
-        <v-col cols="12" sm="4">
+        <v-col cols="12" sm="6">
           <v-file-input
+            v-model="newProduct.image"
             label="Product image"
             filled
             prepend-icon="mdi-camera"
           ></v-file-input>
         </v-col>
-        <v-col cols="12" sm="8">
+        <v-col cols="12">
+          <v-textarea
+            v-model="newProduct.description"
+            label="Description"
+            filled
+            color="#424242"
+          ></v-textarea>
+        </v-col>
+
+        <v-col cols="12" sm="4">
           <v-checkbox
-            v-model="autoGrow"
+            v-model="newProduct.stock"
             class="ma-1"
             label="In stock"
             color="#424242"
           ></v-checkbox>
         </v-col>
-        <v-col cols="1">
-          <v-btn large color="green">Submit</v-btn>
+        <v-col cols="4">
+          <v-btn large color="green" @click="addProduct(newProduct)">Submit</v-btn>
         </v-col>
-        <v-col cols="1">
+        <v-col cols="4">
           <v-btn large color="red">Cancel</v-btn>
         </v-col>
       </v-row>
@@ -87,63 +104,79 @@
               </v-expansion-panel-header>
               <v-expansion-panel-content>
                 <v-container fluid px-12>
-                  <v-divider></v-divider>
                   <v-row align="center">
                     <v-col cols="12" sm="6">
                       <v-text-field
+                        v-model="item.product_code"
                         label="Product code"
-                        outlined
+                        filled
+                        placeholder="Product code"
                         color="#424242"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6">
                       <v-text-field
+                        v-model="item.name"
                         label="Product name"
-                        outlined
+                        filled
                         color="#424242"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6">
-                      <v-text-field
+                      <v-combobox
+                        item-text="category"
+                        :items="categoriesList"
+                        v-model="item.category"
                         label="Category"
-                        outlined
+                        filled
                         color="#424242"
-                      ></v-text-field>
+                      ></v-combobox>
                     </v-col>
                     <v-col cols="12" sm="6">
                       <v-text-field
+                        v-model="item.price"
                         label="Price"
-                        outlined
+                        filled
                         suffix="$"
                         color="#424242"
                       ></v-text-field>
                     </v-col>
-                    <v-col cols="12">
-                      <v-textarea
-                        label="Description"
-                        outlined
+                    <v-col cols="12" sm="6">
+                      <v-text-field
+                        v-model="item.manufacturer"
+                        label="Manufacturer"
+                        filled
                         color="#424242"
-                      ></v-textarea>
+                      ></v-text-field>
                     </v-col>
-                    <v-col cols="12" sm="4">
+                    <v-col cols="12" sm="6">
                       <v-file-input
                         label="Product image"
                         filled
                         prepend-icon="mdi-camera"
                       ></v-file-input>
                     </v-col>
-                    <v-col cols="12" sm="8">
+                    <v-col cols="12">
+                      <v-textarea
+                        v-model="item.description"
+                        label="Description"
+                        filled
+                        color="#424242"
+                      ></v-textarea>
+                    </v-col>
+                    <v-col cols="12" sm="4">
                       <v-checkbox
-                        v-model="autoGrow"
+                        checked
+                        v-model="item.stock"
                         class="ma-1"
                         label="In stock"
                         color="#424242"
                       ></v-checkbox>
                     </v-col>
-                    <v-col cols="1">
-                      <v-btn large color="green">Change</v-btn>
+                    <v-col cols="4">
+                      <v-btn large color="green" @click="updateProduct(item)">Change</v-btn>
                     </v-col>
-                    <v-col cols="1" >
+                    <v-col cols="4" >
                       <v-btn large color="red">Cancel</v-btn>
                     </v-col>
                   </v-row>
@@ -164,16 +197,47 @@
         data () {
             return {
                 hiddenForm: true,
-                name: "ggg"
+                newProduct: {}
             }
         },
         mounted() {
             this.$store.dispatch('GET_GOODS');
+            this.$store.dispatch('GET_CATEGORIES');
         },
         computed: {
             goodsList() {
                 return this.$store.getters.GOODS;
             },
+            categoriesList() {
+                return this.$store.getters.CATEGORIES;
+            },
+        },
+        methods: {
+            addProduct(newProduct) {
+                let product = new FormData();
+                for (let key in newProduct) {
+                    let name = key;
+                    let value = newProduct[key];
+                    product.append(name, value);
+                }
+                // for (let i of product.entries()) {
+                //     console.log(i[0]+i[1])
+                // }
+                return this.$store.dispatch('ADD_PRODUCT', product)
+            },
+            updateProduct(updatedProduct) {
+                let product = new FormData();
+                for (let key in updatedProduct) {
+                    let name = key;
+                    let value = updatedProduct[key];
+                    if (name === 'updated') {break}
+                    product.append(name, value);
+                }
+                for (let i of product.entries()) {
+                    console.log(i[0]+i[1])
+                }
+                return this.$store.dispatch('UPDATE_PRODUCT', product)
+            }
         }
     }
 </script>

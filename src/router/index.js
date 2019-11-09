@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Login from '@/components/Login'
 import Admin from '@/components/Admin'
 import Home from '@/components/Home'
+import Cart from '@/components/Cart'
 
 Vue.use(Router);
 
@@ -29,6 +30,11 @@ export default new Router({
       path: '/login',
       name: 'login',
       component:  Login
+    },
+    {
+      path: '/cart',
+      name: 'cart',
+      component:  Cart
     },
   ],
   mode: 'history'

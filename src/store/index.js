@@ -30,7 +30,7 @@ export default new Vuex.Store ({
     },
     SET_CATEGORIES: (state, payload) => {
       state.categories = payload;
-    },
+    }
   },
   actions: {
     GET_GOODS: async (context, payload) => {
@@ -53,6 +53,14 @@ export default new Vuex.Store ({
           (reject) => {alert("Incorrect username or password")}
 
         );
+    },
+    ADD_PRODUCT: async (context, payload) => {
+      await backend_url.post('/goods/', payload)
+        .then((response) => {alert(response.status)})
+    },
+    UPDATE_PRODUCT: async (context, payload) => {
+      await backend_url.put('/goods/'+payload.get('id')+'/', payload)
+        .then((response) => {alert(response.status)})
     }
   },
 })
