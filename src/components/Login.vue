@@ -1,10 +1,9 @@
 <template>
       <v-container
-        class="fill-height fix-margin"
         fluid
-
       >
         <v-row
+          class="fill-height fix-margin"
           align="center"
           justify="center"
         >
