@@ -34,7 +34,7 @@ export default new Vuex.Store ({
   },
   actions: {
     GET_GOODS: async (context, payload) => {
-      await backend_url.get('/goods/')
+      await backend_url.get('/goods/', {params: payload})
                               .then((response) => {
                                 context.commit('SET_GOODS', response.data);
                               });
@@ -59,7 +59,7 @@ export default new Vuex.Store ({
         .then((response) => {alert(response.status)})
     },
     UPDATE_PRODUCT: async (context, payload) => {
-      await backend_url.put('/goods/'+payload.get('id')+'/', payload)
+      await backend_url.patch('/goods/'+payload.id+'/', payload.payload)
         .then((response) => {alert(response.status)})
     }
   },

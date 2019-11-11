@@ -227,16 +227,17 @@
             },
             updateProduct(updatedProduct) {
                 let product = new FormData();
+                let id = updatedProduct['id'];
                 for (let key in updatedProduct) {
                     let name = key;
                     let value = updatedProduct[key];
-                    if (name === 'updated') {break}
+                    if (name === 'updated' || name === 'id') {continue}
                     product.append(name, value);
                 }
                 for (let i of product.entries()) {
                     console.log(i[0]+i[1])
                 }
-                return this.$store.dispatch('UPDATE_PRODUCT', product)
+                return this.$store.dispatch('UPDATE_PRODUCT', {payload: product, id: id})
             }
         }
     }

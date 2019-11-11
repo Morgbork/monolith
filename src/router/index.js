@@ -4,6 +4,7 @@ import Login from '@/components/Login'
 import Admin from '@/components/Admin'
 import Home from '@/components/Home'
 import Cart from '@/components/Cart'
+import Category from '@/components/Category'
 
 Vue.use(Router);
 
@@ -36,6 +37,11 @@ export default new Router({
       name: 'cart',
       component:  Cart
     },
+    {
+      path:'/catalog/:category',
+      name:'category',
+      component: Category
+    }
   ],
   mode: 'history'
 })

@@ -19,13 +19,22 @@
       </v-app-bar>
 
       <v-navigation-drawer  v-model="drawer" app height="100%" dark color="#424242" class="z-index-0">
-        <img class="logo" src="./assets/logo2.png">
+        <router-link to="/">
+          <a>
+            <img class="logo" src="./assets/logo2.png">
+          </a>
+        </router-link>
         <hr>
         <v-container mt-10 class="catalog-title catalog-text-color">
           <p>Catalog</p>
         </v-container>
-        <v-container ml-4 class="catalog-text-color">
-          <p v-for="n in categoriesList">{{n.category}}</p>
+        <v-container ml-4 class="catalog-text-color" >
+          <p v-for="n in categoriesList"
+          :key="n.id">
+              <router-link :to="'/catalog/' + n.category" active-class="link-active">
+                <a>{{n.category}}</a>
+              </router-link>
+          </p>
         </v-container>
       </v-navigation-drawer>
 
@@ -60,11 +69,26 @@ export default {
         categoriesList() {
             return this.$store.getters.CATEGORIES;
         },
+    },
+    watch: {
+        $route (toR, fromR) {
+            this.category = toR.params.category;
+            this.$store.dispatch('GET_GOODS', {cat: this.$route.params.category});
+        }
     }
 }
 </script>
 
 <style scoped>
+  a {
+    text-decoration: none;
+    color: white;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
   .catalog-title {
     font-size: 30px;
     font-weight: 100;
@@ -73,6 +97,11 @@ export default {
   .catalog-text-color {
     color: #FAFAFA;
   }
+
+  .link-active {
+    text-decoration: underline;
+  }
+
   .logo {
     height:200px;
     padding-left: 30px;

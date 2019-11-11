@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from shop.views import GoodsView, CategoriesView, OrdersView
+from shop.views import GoodsView, CategoriesView, OrdersView, GoodsByCategoryView
 from django.conf.urls.static import static
 from django.conf import settings
 
@@ -15,7 +15,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
     path('rest-auth/', include('rest_auth.urls')),
-    path('order/', OrdersView.as_view(), name="Order")
+    path('order/', OrdersView.as_view(), name="Order"),
+    path('catalog/<str:cat>/', GoodsByCategoryView.as_view(), name="GoodsByCategory")
 ]
 
 urlpatterns += router.urls
